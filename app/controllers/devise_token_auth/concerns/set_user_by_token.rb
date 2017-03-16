@@ -47,7 +47,8 @@ module DeviseTokenAuth::Concerns::SetUserByToken
     end
 
     # user has already been found and authenticated
-    return @resource if @resource && @resource.class == rc
+    # monkey patch to support STI
+    return @resource if @resource.try(:is_a?, rc)
 
     # ensure we clear the client_id
     if !@token
